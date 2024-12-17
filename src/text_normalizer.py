@@ -35,8 +35,9 @@ def remove_html_tags(text: str) -> str:
             Output string.
     """
     # TODO
-    raise NotImplementedError
-
+    soup = BeautifulSoup(text, "html.parser")
+    cleaned_text = soup.get_text()
+    return cleaned_text
 
 def stem_text(text: str) -> str:
     """
@@ -83,9 +84,14 @@ def lemmatize_text(text: str) -> str:
         str
             Output string.
     """
-    # TODO
-    raise NotImplementedError
-
+    doc = nlp(text)
+    lemmatized_tokens = []
+    for token in doc:
+        if token.lemma_ == '-PRON-':
+            lemmatized_tokens.append(token.text.lower())
+        else:
+            lemmatized_tokens.append(token.lemma_.lower())
+    return ' '.join(lemmatized_tokens)
 
 def remove_accented_chars(text: str) -> str:
     """
@@ -99,9 +105,8 @@ def remove_accented_chars(text: str) -> str:
         str
             Output string.
     """
-    # TODO
-    raise NotImplementedError
-
+    nfkd_form = unicodedata.normalize('NFKD', text)
+    return u"".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 def remove_special_chars(text: str, remove_digits: Optional[bool] = False) -> str:
     """
@@ -117,9 +122,8 @@ def remove_special_chars(text: str, remove_digits: Optional[bool] = False) -> st
         str
             Output string.
     """
-    # TODO
-    raise NotImplementedError
-
+    pattern = r'[^a-zA-Z\s]' if remove_digits else r'[^a-zA-Z0-9\s]'
+    return re.sub(pattern, '', text)
 
 def remove_stopwords(
     text: str,
@@ -143,9 +147,19 @@ def remove_stopwords(
         str
             Output string.
     """
-    # TODO
-    raise NotImplementedError
+    tokens = tokenizer.tokenize(text)
+    tokens = [token.strip() for token in tokens]
 
+    # Convert stopwords to lowercase for comparison
+    stopwords_lower = set(word.lower() for word in stopwords)
+
+    filtered_tokens = []
+    for token in tokens:
+        token_lower = token.lower()
+        if token_lower not in stopwords_lower:
+            filtered_tokens.append(token)
+
+    return ' '.join(filtered_tokens)
 
 def remove_extra_new_lines(text: str) -> str:
     """
