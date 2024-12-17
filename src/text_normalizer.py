@@ -54,7 +54,19 @@ def stem_text(text: str) -> str:
             Output string.
     """
     # TODO
-    raise NotImplementedError
+    # Initialize PorterStemmer
+    stemmer = nltk.porter.PorterStemmer()
+
+    # Tokenize the input text
+    tokens = word_tokenize(text)
+
+    # Apply stemming to each token
+    stemmed_tokens = [stemmer.stem(word) for word in tokens]
+
+    # Rejoin the tokens into a single string
+    stemmed_text = " ".join(stemmed_tokens)
+
+    return stemmed_text
 
 
 def lemmatize_text(text: str) -> str:
@@ -148,7 +160,7 @@ def remove_extra_new_lines(text: str) -> str:
             Output string.
     """
     # TODO
-    raise NotImplementedError
+    return re.sub(r"[\n\t]+", " ", text).strip()
 
 
 def remove_extra_whitespace(text: str) -> str:
@@ -164,7 +176,8 @@ def remove_extra_whitespace(text: str) -> str:
             Output string.
     """
     # TODO
-    raise NotImplementedError
+    # Elimina espacios adicionales y deja solo un espacio entre palabras.
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def expand_contractions(text, contraction_mapping=CONTRACTION_MAP) -> str:

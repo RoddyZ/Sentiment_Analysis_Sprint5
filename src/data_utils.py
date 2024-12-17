@@ -60,5 +60,18 @@ def split_data(
         y_test : pd.Series
             List labels for test
     """
-    # TODO
+    # Definimos las columnas que servirán como características (features) y objetivo (target).
+    feature_column = "review"
+    target_column = "positive"
+
+    # Separamos características (X) y objetivos (y) para el conjunto de entrenamiento
+    X_train = train[feature_column]
+    y_train = train[target_column]
+
+    # Separamos características (X) y objetivos (y) para el conjunto de prueba
+    X_test = test[feature_column]
+    y_test = test[target_column]
+
+    return X_train, y_train, X_test, y_test
+
 
